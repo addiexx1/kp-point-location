@@ -290,8 +290,9 @@ def generate_simple_polygon(num_sides):
 """
                  
 if __name__ == "__main__":
-    num_points = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000]
+    # num_points = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000]
     # num_points = [1000, 2000, 3000]
+    num_points = [n for n in range(500, 30001, 500)]
     preprocessing_times = []
     avg_query_times = []
     
@@ -305,7 +306,7 @@ if __name__ == "__main__":
         query_times = []
         for _ in range(500):
             point = np.random.rand(2)
-            shapely_point = Point(point)
+            # shapely_point = Point(point)
             
             start_time = time.time()
             inside_kp  = kp.point_location(point)
@@ -325,7 +326,10 @@ if __name__ == "__main__":
     })
 
     print(results_df)
-    
+    # Save as a tab-separated values file (.txt)
+    results_df.to_csv('results.txt', sep='\t', index=False)
+
+
     # Plotting
     # fig, ax1 = plt.subplots()
 
@@ -348,17 +352,57 @@ if __name__ == "__main__":
     # Plot Preprocessing Time
     plt.figure(figsize=(10, 6))
     plt.plot(results_df['Num Points'], results_df['Preprocessing Time'], marker='o', linestyle='-', color='r')
-    plt.title('Preprocessing Time vs. Number of Points')
+    plt.title('Preprocessing Time Complexity Analysis')
     plt.xlabel('Number of Points')
     plt.ylabel('Preprocessing Time (seconds)')
-    plt.grid(True)
+    plt.grid(True, which="both", ls="--")
     plt.show()
 
     # Plot Average Query Time
     plt.figure(figsize=(10, 6))
     plt.plot(results_df['Num Points'], results_df['Average Query Time'], marker='o', linestyle='-', color='b')
-    plt.title('Average Query Time vs. Number of Points')
+    plt.title('Query Time Complexity Analysis ')
     plt.xlabel('Number of Points')
     plt.ylabel('Average Query Time (seconds)')
-    plt.grid(True)
+    plt.grid(True, which="both", ls="--")
+    plt.show()
+    
+    # Plotting Preprocessing Time using a Log-Log Plot
+    plt.figure(figsize=(10, 6))
+    plt.loglog(results_df['Num Points'], results_df['Preprocessing Time'], marker='o', linestyle='-', color='r')
+    plt.xlabel('Log Number of Points')
+    plt.ylabel('Log Preprocessing Time (seconds)')
+    plt.title('Preprocessing Time Complexity Analysis Log-Log Plot')
+    plt.grid(True, which="both", ls="--")
+
+    plt.show()
+    
+    # Plotting Preprocessing Time using a Semi-Log Plot (Logarithmic y-axis)
+    plt.figure(figsize=(10, 6))
+    plt.semilogy(results_df['Num Points'], results_df['Preprocessing Time'], marker='o', linestyle='-', color='r')
+    plt.xlabel('Number of Points')
+    plt.ylabel('Log Preprocessing Time (seconds)')
+    plt.title('Preprocessing Time Complexity Analysis Semi-Log Plot (Log y-axis)')
+    plt.grid(True, which="both", ls="--")
+
+    plt.show()
+
+    # Plotting Average Query Time using a Semi-Log Plot (Logarithmic y-axis)
+    plt.figure(figsize=(10, 6))
+    plt.semilogy(results_df['Num Points'], results_df['Average Query Time'], marker='o', linestyle='-', color='b')
+    plt.xlabel('Number of Points')
+    plt.ylabel('Log Average Query Time (seconds)')
+    plt.title('Query Time Complexity Analysis Semi-Log Plot')
+    plt.grid(True, which="both", ls="--")
+
+    plt.show()
+    
+    # Plotting Average Query Time using a Log-Log Plot
+    plt.figure(figsize=(10, 6))
+    plt.loglog(results_df['Num Points'], results_df['Average Query Time'], marker='o', linestyle='-', color='b')
+    plt.xlabel('Log Number of Points')
+    plt.ylabel('Log Average Query Time (seconds)')
+    plt.title('Query Time Complexity Analysis Log-Log Plot')
+    plt.grid(True, which="both", ls="--")
+
     plt.show()
